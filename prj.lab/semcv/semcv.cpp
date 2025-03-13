@@ -22,19 +22,10 @@ std::string strid_from_mat(const cv::Mat& img, const int n) {
     return ss.str();
 }
 
-void generateAndSaveImages(const std::string& folder) {
-    std::vector<int> depths = {CV_8U, CV_8S, CV_16U, CV_16S, CV_32S, CV_32F, CV_64F};
-    std::vector<int> channels = {1, 3};
-    std::vector<std::string> formats = {"png", "tiff", "jpg"};
-    
-    for (int depth : depths) {
-        for (int ch : channels) {
-            cv::Mat img(100, 100, CV_MAKETYPE(depth, ch), cv::Scalar::all(128));
-            std::string id = strid_from_mat(img);
-            for (const std::string& format : formats) {
-                std::string filename = folder + "/" + id + "." + format;
-                cv::imwrite(filename, img);
-            }
-        }
-    }
+std::vector<std::filesystem::path> get_list_of_file_paths(const std::filesystem::path& path_lst)
+{
+    // TODO: implement
+    std::vector<std::filesystem::path> paths;
+    return paths;
 }
+
