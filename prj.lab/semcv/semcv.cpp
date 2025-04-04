@@ -22,10 +22,24 @@ std::string strid_from_mat(const cv::Mat& img, const int n) {
     return ss.str();
 }
 
-std::vector<std::filesystem::path> get_list_of_file_paths(const std::filesystem::path& path_lst)
-{
-    // TODO: implement
-    std::vector<std::filesystem::path> paths;
-    return paths;
+
+std::vector<fs::path> get_list_of_file_paths(const fs::path& path_lst) {
+    std::vector<fs::path> file_paths;
+    std::ifstream infile(path_lst);
+    std::string line;
+    fs::path lst_directory = path_lst.parent_path();
+
+    if (!infile.is_open()) {
+        throw std::runtime_error("Unable to open lst file: " + path_lst.string());
+    }
+
+    while (std::getline(infile, line)) {
+        if (!line.empty()) {
+            fs::path file_path = lst_directory / line;
+            file_paths.push_back(file_path);
+        }
+    }
+
+    return file_paths;
 }
 

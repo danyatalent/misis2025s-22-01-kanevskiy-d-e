@@ -3,6 +3,9 @@
 
 #include <opencv2/opencv.hpp>
 #include <filesystem>
+#include <fstream>
+
+namespace fs = std::filesystem;
 
 std::string strid_from_mat(const cv::Mat& img, int n = 4);
 

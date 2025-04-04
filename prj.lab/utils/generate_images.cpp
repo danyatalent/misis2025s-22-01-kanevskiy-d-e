@@ -1,116 +1,81 @@
-//
-// Created by danya on 21.02.2025.
-//
 #include <opencv2/opencv.hpp>
 #include <iostream>
+#include <vector>
 #include <fstream>
 #include <filesystem>
-#include <vector>
-#include <random>
-
-namespace fs = std::filesystem;
 
 using namespace cv;
 using namespace std;
+namespace fs = std::filesystem;
 
-template <typename T>
-void fillImage(Mat& img, int depth) {
-    randu(img, Scalar::all(0), Scalar::all(256));
+string getDepthName(const int depth) {
+    switch (depth) {
+        case CV_8U:  return "uint08";
+        case CV_16U: return "uint16";
+        case CV_32F: return "real32";
+        default:     return "unknown";
+    }
 }
 
-template <>
-void fillImage<float>(Mat& img, int depth) {
-    randu(img, Scalar::all(0.0f), Scalar::all(1.0f));
-}
+void saveImage(const Mat& img, const string& filepath, const string& format) {
+    vector<int> compression_params;
 
-template <>
-void fillImage<double>(Mat& img, int depth) {
-    randu(img, Scalar::all(0.0), Scalar::all(1.0));
-}
-
-struct ImageConfig {
-    int type;
-    int channels;
-    int depth;
-    string typeName;
-};
-
-vector<ImageConfig> getImageConfigs() {
-    return {
-        {CV_8U,  1, CV_8U,  "CV_8UC1"},
-        {CV_8U,  3, CV_8U,  "CV_8UC3"},
-        {CV_8U,  4, CV_8U,  "CV_8UC4"},
-        {CV_16U, 1, CV_16U, "CV_16UC1"},
-        {CV_16U, 3, CV_16U, "CV_16UC3"},
-        {CV_32F, 1, CV_32F, "CV_32FC1"},
-        {CV_32F, 3, CV_32F, "CV_32FC3"},
-        {CV_64F, 1, CV_64F, "CV_64FC1"}
-    };
-}
-
-bool saveImage(const string& path, const Mat& img, const string& format) {
-
-    if (format == "JPEG"  && (img.channels() == 4 || img.depth() != CV_8U))
-    {
-        return false;
+    if (format == "jpeg") {
+        compression_params.push_back(IMWRITE_JPEG_QUALITY);
+        compression_params.push_back(95);
+    } else if (format == "png") {
+        compression_params.push_back(IMWRITE_PNG_COMPRESSION);
+        compression_params.push_back(3);
+    } else if (format == "tiff") {
+        compression_params.push_back(IMWRITE_TIFF_COMPRESSION);
+        compression_params.push_back(1);
     }
 
-    return imwrite(path, img);
+    imwrite(filepath, img, compression_params);
+    cout << "Saved: " << filepath << endl;
+}
+
+Mat generateImage(const int rows, const int cols, const int type) {
+    Mat img(rows, cols, type);
+
+    return img;
 }
 
 int main() {
-    const string output_dir = "test_images_all";
-    const Size image_size(256, 256);
+    vector<int> depths = {CV_8U, CV_16U, CV_32F};
+    vector<int> channels = {1, 3, 4};
+    vector<string> formats = {"png", "jpeg", "tiff"};
+    int index = 0;
 
-    vector<string> formats = {"JPEG", "PNG", "TIFF"};
-    auto configs = getImageConfigs();
-
-    try {
-        fs::create_directories(output_dir);
-
+    string folderName = "images";
+    if (!fs::exists(folderName)) {
+        fs::create_directory(folderName);
     }
-    catch (const fs::filesystem_error& e) {
-        cerr << "Filesystem error: " << e.what() << endl;
+
+    ofstream lstFile(folderName + "/task01.lst");
+    if (!lstFile.is_open()) {
+        cerr << "Не удалось создать файл task01.lst" << endl;
         return -1;
     }
-    std::ofstream outfile("test_images_all/task01.lst");
 
-    RNG rng(12345);
-    int total = 0, success = 0;
+    for (int depth : depths) {
+        for (int ch : channels) {
+            for (const string& format : formats) {
+                Mat img = generateImage(256, 256, CV_MAKETYPE(depth, ch));
 
-    for (const auto& cfg : configs) {
-        Mat img(image_size, CV_MAKETYPE(cfg.depth, cfg.channels));
+                string depthName = getDepthName(depth);
+                string filename = "0256x0256." + to_string(ch) + "." + depthName + "." + format;
+                string filepath = folderName + "/" + filename;
 
-        switch (cfg.depth) {
-            case CV_8U:  fillImage<uchar>(img, cfg.depth); break;
-            case CV_16U: fillImage<ushort>(img, cfg.depth); break;
-            case CV_32F: fillImage<float>(img, cfg.depth); break;
-            case CV_64F: fillImage<double>(img, cfg.depth); break;
-            default: continue;
-        }
+                saveImage(img, filepath, format);
 
-        for (const auto& fmt : formats) {
-            string ext = "." + fmt;
-            transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
-
-            string filename = cfg.typeName + "_" + fmt + ext;
-
-            string path = output_dir + "/" + filename;
-
-            total++;
-            if (saveImage(path, img, fmt)) {
-                success++;
-                outfile << filename << endl;
-                cout << "Saved: " << path << endl;
+                lstFile << filename << endl;
             }
         }
     }
 
-    outfile.close();
-
-    cout << "\nTotal processed: " << total
-         << "\nSuccessfully saved: " << success
-         << "\nFailed: " << (total - success) << endl;
+    lstFile.close();
+    cout << "Все изображения и файл task01.lst успешно сохранены в папке images/!" << endl;
 
     return 0;
 }
