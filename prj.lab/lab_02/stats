@@ -1,0 +1,64 @@
+Image 0:
+  BG    : mean=0 std=0
+  Square: mean=127 std=0
+  Circle: mean=255 std=0
+Image 1:
+  BG    : mean=20 std=0
+  Square: mean=127 std=0
+  Circle: mean=235 std=0
+Image 2:
+  BG    : mean=55 std=0
+  Square: mean=127 std=0
+  Circle: mean=200 std=0
+Image 3:
+  BG    : mean=90 std=0
+  Square: mean=127 std=0
+  Circle: mean=165 std=0
+Image 4:
+  BG    : mean=1.17268 std=1.74588
+  Square: mean=127.005 std=2.98679
+  Circle: mean=253.815 std=1.76399
+Image 5:
+  BG    : mean=19.9924 std=3.00902
+  Square: mean=126.98 std=3.01115
+  Circle: mean=235.003 std=3.0309
+Image 6:
+  BG    : mean=55.0259 std=2.98778
+  Square: mean=127.002 std=2.99497
+  Circle: mean=199.977 std=2.97657
+Image 7:
+  BG    : mean=90.0318 std=3.03785
+  Square: mean=126.985 std=3.0117
+  Circle: mean=165.027 std=3.02582
+Image 8:
+  BG    : mean=2.81185 std=4.08414
+  Square: mean=127 std=7.0453
+  Circle: mean=252.139 std=4.17858
+Image 9:
+  BG    : mean=20.0159 std=7.00069
+  Square: mean=127 std=7.09588
+  Circle: mean=235.001 std=6.97041
+Image 10:
+  BG    : mean=55.0058 std=7.05103
+  Square: mean=127.018 std=6.99093
+  Circle: mean=199.961 std=6.99799
+Image 11:
+  BG    : mean=89.9735 std=6.99461
+  Square: mean=126.999 std=7.01967
+  Circle: mean=165.026 std=7.02163
+Image 12:
+  BG    : mean=6.03889 std=8.76908
+  Square: mean=127.097 std=14.8813
+  Circle: mean=249.061 std=8.68786
+Image 13:
+  BG    : mean=20.655 std=13.8889
+  Square: mean=126.903 std=15.0761
+  Circle: mean=234.354 std=13.6885
+Image 14:
+  BG    : mean=55.0615 std=15.0714
+  Square: mean=126.96 std=15.053
+  Circle: mean=199.981 std=14.9506
+Image 15:
+  BG    : mean=90.0253 std=14.9538
+  Square: mean=127.039 std=14.9745
+  Circle: mean=165.032 std=15.0715

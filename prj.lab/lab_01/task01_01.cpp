@@ -16,7 +16,7 @@ int main(const int argc, char** argv) {
 
 
     try {
-        for (const auto file_paths = get_list_of_file_paths(lst_path); const auto& file_path : file_paths) {
+        for (const auto file_paths = semcv::get_list_of_file_paths(lst_path); const auto& file_path : file_paths) {
             cv::Mat img = cv::imread(file_path.string(), cv::IMREAD_UNCHANGED);
 
             if (img.empty()) {
@@ -24,7 +24,7 @@ int main(const int argc, char** argv) {
                 continue;
             }
 
-            std::string expected_format = strid_from_mat(img);
+            std::string expected_format = semcv::strid_from_mat(img);
 
             std::string file_name = fs::path(file_path).filename().string();
 
