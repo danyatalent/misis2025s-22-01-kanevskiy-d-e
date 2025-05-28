@@ -26,6 +26,10 @@ namespace semcv
                   cv::Mat& mask_bg, cv::Mat& mask_square, cv::Mat& mask_circle);
     cv::Mat draw_histogram(const cv::Mat& img_input, const cv::Scalar& bg_color = cv::Scalar(220));
     cv::Mat make_histogram_grid(const std::vector<cv::Mat>& images);
+
+    cv::Mat autocontrast(const cv::Mat& img, const double q_black, const double q_white);
+    cv::Mat naive_autocontrast(const cv::Mat& img, const double q_black, const double q_white);
+    cv::Mat autocontrast_rgb(const cv::Mat& img, const double q_black, const double q_white);
 }
 
 

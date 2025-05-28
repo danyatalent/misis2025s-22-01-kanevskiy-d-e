@@ -197,4 +197,137 @@ namespace semcv
         }
         return result;
     }
+
+    cv::Mat autocontrast(const cv::Mat& img, const double q_black, const double q_white) {
+        CV_Assert(!img.empty());
+        CV_Assert(q_black >= 0.0 && q_black <= 1.0);
+        CV_Assert(q_white >= 0.0 && q_white <= 1.0);
+        CV_Assert(q_black <= q_white);
+
+        if (img.channels() == 3)
+        {
+            return naive_autocontrast(img, q_black, q_white);
+        }
+
+        const int total_pixels = img.rows * img.cols;
+
+        int hist[256] = {0};
+        for (int y = 0; y < img.rows; y++) {
+            for (int x = 0; x < img.cols; x++) {
+                hist[img.at<uchar>(y, x)]++;
+            }
+        }
+
+        double cumsum[256] = {0};
+        cumsum[0] = hist[0];
+        for (int i = 1; i < 256; i++) {
+            cumsum[i] = cumsum[i-1] + hist[i];
+        }
+
+        const double black_threshold = q_black * total_pixels;
+        const double white_threshold = q_white * total_pixels;
+
+        uchar v_min = 0;
+        uchar v_max = 255;
+
+        for (int i = 0; i < 256; i++) {
+            if (cumsum[i] >= black_threshold) {
+                v_min = i;
+                break;
+            }
+        }
+
+        for (int i = 255; i >= 0; i--) {
+            if (cumsum[i] <= white_threshold) {
+                v_max = i;
+                break;
+            }
+        }
+
+        if (v_min == v_max) {
+            return img.clone();
+        }
+
+        cv::Mat result;
+        img.convertTo(result, CV_8UC3, 255.0 / (v_max - v_min), -255.0 * v_min / (v_max - v_min));
+
+        cv::threshold(result, result, 255, 255, cv::THRESH_TRUNC);
+        cv::threshold(result, result, 0, 0, cv::THRESH_TOZERO);
+
+        return result;
+    }
+
+    cv::Mat naive_autocontrast(const cv::Mat& img, const double q_black, const double q_white)
+    {
+        CV_Assert(!img.empty());
+        CV_Assert(img.type() == CV_8UC3);
+        CV_Assert(q_black >= 0.0 && q_black <= 1.0);
+        CV_Assert(q_white >= 0.0 && q_white <= 1.0);
+
+        std::vector<cv::Mat> channels;
+        cv::split(img, channels);
+
+        for (auto& channel : channels)
+        {
+            channel = autocontrast(channel, q_black, q_white);
+        }
+
+        cv::Mat result;
+        cv::merge(channels, result);
+        return result;
+    }
+
+
+    cv::Mat autocontrast_rgb(const cv::Mat& img, const double q_black, const double q_white) {
+        CV_Assert(img.type() == CV_8UC3);
+        CV_Assert(0.0 <= q_black && q_black < q_white && q_white <= 1.0);
+
+        std::vector<cv::Mat> channels;
+        cv::split(img, channels);
+
+        // Собираем все значения пикселей каждого канала в один вектор
+        std::vector<uchar> all_pixels_r, all_pixels_g, all_pixels_b;
+        all_pixels_r.assign(channels[2].begin<uchar>(), channels[2].end<uchar>());
+        all_pixels_g.assign(channels[1].begin<uchar>(), channels[1].end<uchar>());
+        all_pixels_b.assign(channels[0].begin<uchar>(), channels[0].end<uchar>());
+
+        // Получаем объединённый вектор интенсивностей (для согласованности)
+        std::vector<uchar> all_pixels;
+        all_pixels.reserve(all_pixels_r.size() * 3);
+        all_pixels.insert(all_pixels.end(), all_pixels_r.begin(), all_pixels_r.end());
+        all_pixels.insert(all_pixels.end(), all_pixels_g.begin(), all_pixels_g.end());
+        all_pixels.insert(all_pixels.end(), all_pixels_b.begin(), all_pixels_b.end());
+
+        std::ranges::sort(all_pixels);
+
+        auto get_quantile = [&](double q) {
+            const auto index = static_cast<size_t>(q * (all_pixels.size() - 1));
+            return all_pixels[index];
+        };
+
+        const uchar low = get_quantile(q_black);
+        const uchar high = get_quantile(q_white);
+        if (low >= high) return img.clone();  // avoid division by zero
+
+        // Линейное растяжение
+        cv::Mat result = img.clone();
+        for (int y = 0; y < img.rows; ++y) {
+            for (int x = 0; x < img.cols; ++x) {
+                for (int c = 0; c < 3; ++c) {
+                    const uchar v = img.at<cv::Vec3b>(y, x)[c];
+                    uchar stretched;
+                    if (v <= low)
+                        stretched = 0;
+                    else if (v >= high)
+                        stretched = 255;
+                    else
+                        stretched = static_cast<uchar>((v - low) * 255.0 / (high - low));
+                    result.at<cv::Vec3b>(y, x)[c] = stretched;
+                }
+            }
+        }
+
+        return result;
+    }
+
 }
