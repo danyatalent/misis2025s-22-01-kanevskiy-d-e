@@ -1,0 +1,21 @@
+Quality Assessment Report
+=========================
+
+Comparing 1 images
+
+Image	GT	Det	Match	IoU		Center Dist	Size Diff	Angle Diff
+---------------------------------------------------------------------
+1	25	25	25	0.755		0.174		33.594		86.825
+
+Summary:
+---------------------------------------------------------------------
+Total GT objects: 25
+Total detected objects: 25
+Total matched objects: 25
+Precision: 1.0000
+Recall: 1.0000
+F1 Score: 1.0000
+Average IoU: 0.755
+Average Center Distance: 0.174
+Average Size Difference: 33.594
+Average Angle Difference: 86.825
