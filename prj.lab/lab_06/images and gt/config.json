@@ -1,0 +1,11 @@
+{
+    "bg_color": 0,
+    "blur_size": 25,
+    "elps_color": 255,
+    "max_elps_height": 150,
+    "max_elps_width": 160,
+    "min_elps_height": 10,
+    "min_elps_width": 20,
+    "n": 5,
+    "noise_std": 44.0
+}

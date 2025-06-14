@@ -1,0 +1,336 @@
+{
+    "blur_size": 25,
+    "colors": {
+        "bg_color": 0,
+        "elps_color": 255
+    },
+    "noise_std": 44.0,
+    "objects": [
+        {
+            "elps_parameters": {
+                "elps_angle": 101.13816445941367,
+                "elps_height": 47,
+                "elps_width": 84,
+                "elps_x": 165,
+                "elps_y": 151
+            },
+            "pic_coordinates": {
+                "col": 0,
+                "row": 0
+            }
+        },
+        {
+            "elps_parameters": {
+                "elps_angle": 186.93489383170592,
+                "elps_height": 55,
+                "elps_width": 130,
+                "elps_x": 126,
+                "elps_y": 143
+            },
+            "pic_coordinates": {
+                "col": 1,
+                "row": 0
+            }
+        },
+        {
+            "elps_parameters": {
+                "elps_angle": 200.03813468094694,
+                "elps_height": 25,
+                "elps_width": 22,
+                "elps_x": 80,
+                "elps_y": 130
+            },
+            "pic_coordinates": {
+                "col": 2,
+                "row": 0
+            }
+        },
+        {
+            "elps_parameters": {
+                "elps_angle": 334.0436184580153,
+                "elps_height": 25,
+                "elps_width": 60,
+                "elps_x": 102,
+                "elps_y": 149
+            },
+            "pic_coordinates": {
+                "col": 3,
+                "row": 0
+            }
+        },
+        {
+            "elps_parameters": {
+                "elps_angle": 153.8746577000845,
+                "elps_height": 65,
+                "elps_width": 21,
+                "elps_x": 153,
+                "elps_y": 78
+            },
+            "pic_coordinates": {
+                "col": 4,
+                "row": 0
+            }
+        },
+        {
+            "elps_parameters": {
+                "elps_angle": 131.15242404462322,
+                "elps_height": 44,
+                "elps_width": 122,
+                "elps_x": 117,
+                "elps_y": 94
+            },
+            "pic_coordinates": {
+                "col": 0,
+                "row": 1
+            }
+        },
+        {
+            "elps_parameters": {
+                "elps_angle": 222.03160955300848,
+                "elps_height": 70,
+                "elps_width": 116,
+                "elps_x": 133,
+                "elps_y": 149
+            },
+            "pic_coordinates": {
+                "col": 1,
+                "row": 1
+            }
+        },
+        {
+            "elps_parameters": {
+                "elps_angle": 307.59432283156286,
+                "elps_height": 64,
+                "elps_width": 34,
+                "elps_x": 185,
+                "elps_y": 130
+            },
+            "pic_coordinates": {
+                "col": 2,
+                "row": 1
+            }
+        },
+        {
+            "elps_parameters": {
+                "elps_angle": 20.757948900816213,
+                "elps_height": 57,
+                "elps_width": 91,
+                "elps_x": 145,
+                "elps_y": 161
+            },
+            "pic_coordinates": {
+                "col": 3,
+                "row": 1
+            }
+        },
+        {
+            "elps_parameters": {
+                "elps_angle": 213.30071900448485,
+                "elps_height": 100,
+                "elps_width": 61,
+                "elps_x": 93,
+                "elps_y": 110
+            },
+            "pic_coordinates": {
+                "col": 4,
+                "row": 1
+            }
+        },
+        {
+            "elps_parameters": {
+                "elps_angle": 51.60873495217189,
+                "elps_height": 38,
+                "elps_width": 105,
+                "elps_x": 125,
+                "elps_y": 171
+            },
+            "pic_coordinates": {
+                "col": 0,
+                "row": 2
+            }
+        },
+        {
+            "elps_parameters": {
+                "elps_angle": 265.0374757227512,
+                "elps_height": 65,
+                "elps_width": 82,
+                "elps_x": 80,
+                "elps_y": 119
+            },
+            "pic_coordinates": {
+                "col": 1,
+                "row": 2
+            }
+        },
+        {
+            "elps_parameters": {
+                "elps_angle": 97.8398187332397,
+                "elps_height": 13,
+                "elps_width": 79,
+                "elps_x": 212,
+                "elps_y": 162
+            },
+            "pic_coordinates": {
+                "col": 2,
+                "row": 2
+            }
+        },
+        {
+            "elps_parameters": {
+                "elps_angle": 171.25502448425658,
+                "elps_height": 20,
+                "elps_width": 109,
+                "elps_x": 108,
+                "elps_y": 56
+            },
+            "pic_coordinates": {
+                "col": 3,
+                "row": 2
+            }
+        },
+        {
+            "elps_parameters": {
+                "elps_angle": 28.090495609999373,
+                "elps_height": 112,
+                "elps_width": 63,
+                "elps_x": 140,
+                "elps_y": 135
+            },
+            "pic_coordinates": {
+                "col": 4,
+                "row": 2
+            }
+        },
+        {
+            "elps_parameters": {
+                "elps_angle": 72.6754236044778,
+                "elps_height": 130,
+                "elps_width": 76,
+                "elps_x": 140,
+                "elps_y": 120
+            },
+            "pic_coordinates": {
+                "col": 0,
+                "row": 3
+            }
+        },
+        {
+            "elps_parameters": {
+                "elps_angle": 320.6084762672417,
+                "elps_height": 120,
+                "elps_width": 33,
+                "elps_x": 159,
+                "elps_y": 141
+            },
+            "pic_coordinates": {
+                "col": 1,
+                "row": 3
+            }
+        },
+        {
+            "elps_parameters": {
+                "elps_angle": 243.76213077792886,
+                "elps_height": 86,
+                "elps_width": 91,
+                "elps_x": 122,
+                "elps_y": 153
+            },
+            "pic_coordinates": {
+                "col": 2,
+                "row": 3
+            }
+        },
+        {
+            "elps_parameters": {
+                "elps_angle": 176.32026886706663,
+                "elps_height": 79,
+                "elps_width": 30,
+                "elps_x": 183,
+                "elps_y": 94
+            },
+            "pic_coordinates": {
+                "col": 3,
+                "row": 3
+            }
+        },
+        {
+            "elps_parameters": {
+                "elps_angle": 275.7791246549337,
+                "elps_height": 40,
+                "elps_width": 66,
+                "elps_x": 127,
+                "elps_y": 154
+            },
+            "pic_coordinates": {
+                "col": 4,
+                "row": 3
+            }
+        },
+        {
+            "elps_parameters": {
+                "elps_angle": 265.5386948580511,
+                "elps_height": 48,
+                "elps_width": 142,
+                "elps_x": 110,
+                "elps_y": 109
+            },
+            "pic_coordinates": {
+                "col": 0,
+                "row": 4
+            }
+        },
+        {
+            "elps_parameters": {
+                "elps_angle": 39.544408262952864,
+                "elps_height": 41,
+                "elps_width": 69,
+                "elps_x": 172,
+                "elps_y": 138
+            },
+            "pic_coordinates": {
+                "col": 1,
+                "row": 4
+            }
+        },
+        {
+            "elps_parameters": {
+                "elps_angle": 147.2194886674166,
+                "elps_height": 12,
+                "elps_width": 35,
+                "elps_x": 157,
+                "elps_y": 96
+            },
+            "pic_coordinates": {
+                "col": 2,
+                "row": 4
+            }
+        },
+        {
+            "elps_parameters": {
+                "elps_angle": 267.444533267305,
+                "elps_height": 56,
+                "elps_width": 34,
+                "elps_x": 191,
+                "elps_y": 84
+            },
+            "pic_coordinates": {
+                "col": 3,
+                "row": 4
+            }
+        },
+        {
+            "elps_parameters": {
+                "elps_angle": 335.5775079727258,
+                "elps_height": 106,
+                "elps_width": 50,
+                "elps_x": 154,
+                "elps_y": 131
+            },
+            "pic_coordinates": {
+                "col": 4,
+                "row": 4
+            }
+        }
+    ],
+    "size_of_collage": 5
+}
