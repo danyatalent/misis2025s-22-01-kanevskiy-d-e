@@ -120,7 +120,7 @@ cv::Mat incre_filling(cv::Mat input, cv::Mat Original){
 	return output_;
 }
 
-cv::Mat removeShadowWaterFilling(const cv::Mat& input) {
+cv::Mat removeShadowWaterFilling(const cv::Mat& input, float rate) {
 	// Перевод из BGR в YCrCb
 	cv::Mat img_YCrCb;
 	cv::cvtColor(input, img_YCrCb, cv::COLOR_BGR2YCrCb);
@@ -134,7 +134,7 @@ cv::Mat removeShadowWaterFilling(const cv::Mat& input) {
 	const cv::Mat original_Y = chan[0].clone();
 
 	// downsample
-	downsample(Y, Y, 0.2);
+	downsample(Y, Y, rate);
 
 	// Обработка яркостного канала (Y)
 
