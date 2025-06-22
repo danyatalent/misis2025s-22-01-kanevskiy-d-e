@@ -36,10 +36,15 @@ int main(const int argc, char** argv) {
     // Делаем кроп
     const cv::Rect roi = loadROIFromJson(json_path);
     const cv::Mat img_crop = img(roi).clone();
+    // cv::imwrite(crop_path, img_crop);
+
+    const clock_t start = clock();
 
     // Удаляем тень
     const cv::Mat result = removeShadowWaterFilling(img_crop);
 
+    const double duration = (clock() - start) / static_cast<double>(CLOCKS_PER_SEC);
+    std::cout << "time: " << duration  << " sec" << std::endl;
     // Сохраняем
     cv::imwrite(output_path_1, result);
     return 0;

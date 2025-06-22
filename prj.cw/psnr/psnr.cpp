@@ -63,15 +63,14 @@ cv::Scalar getMSSIM(const cv::Mat& i1, const cv::Mat& i2) {
 }
 
 int main(const int argc, char** argv) {
-    if (argc < 5) {
-        std::cerr << "Usage: psnr <image_path> <gt_path> <gt_json_path> <gt_crop_path>" << std::endl;
+    if (argc < 4) {
+        std::cerr << "Usage: psnr <image_path> <gt_path> <gt_json_path>" << std::endl;
         return -1;
     }
 
     const std::string result_img_path = argv[1];
     const std::string gt_img_path = argv[2];
     const std::string gt_json_path = argv[3];
-    const std::string gt_crop_path = argv[4];
 
     const cv::Mat result = cv::imread(result_img_path);
     const cv::Mat gt = cv::imread(gt_img_path);
@@ -83,7 +82,6 @@ int main(const int argc, char** argv) {
     cv::Rect gt_rect = loadROIFromJson(gt_json_path);
     gt_rect &= cv::Rect(0, 0, gt.cols, gt.rows); // safety clip
     cv::Mat gt_cropped = gt(gt_rect);
-    cv::imwrite(gt_crop_path, gt_cropped);
 
     if (gt_cropped.size() != result.size()) {
         std::cout << "resizing\n";
