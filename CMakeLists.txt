@@ -14,4 +14,12 @@ find_package(OpenCV REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
 
+if(NOT OpenCV_INCLUDE_DIRS)
+    message(FATAL_ERROR "OpenCV_INCLUDE_DIRS not found")
+endif()
+
+message(STATUS "OpenCV_INCLUDE_DIRS = ${OpenCV_INCLUDE_DIRS}")
+message(STATUS "OpenCV_LIBS = ${OpenCV_LIBS}")
+
 add_subdirectory(prj.lab)
+add_subdirectory(prj.cw)
