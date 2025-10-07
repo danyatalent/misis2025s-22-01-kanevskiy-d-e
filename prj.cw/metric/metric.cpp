@@ -22,6 +22,61 @@ cv::Rect loadROIFromJson(const std::string& json_path) {
     return {x, y, w, h};
 }
 
+// Загружаем JSON и извлекаем 4 точки ROI
+std::vector<cv::Point2f> loadPolygonROIFromJson(const std::string& json_path) {
+    std::ifstream in(json_path);
+    if (!in.is_open()) {
+        throw std::runtime_error("Не удалось открыть JSON: " + json_path);
+    }
+
+    json j;
+    in >> j;
+
+    std::vector<cv::Point2f> polygon;
+    for (const auto& pt : j["points"]) {
+        float x = pt["x"];
+        float y = pt["y"];
+        polygon.emplace_back(x, y);
+    }
+
+    if (polygon.size() != 4) {
+        throw std::runtime_error("Ожидалось 4 точки в JSON: " + json_path);
+    }
+
+    return polygon;
+}
+
+cv::Mat cropAndAlignByPolygon(const cv::Mat& img, const std::vector<cv::Point2f>& polygon) {
+    if (polygon.size() != 4) {
+        throw std::invalid_argument("polygon должен содержать ровно 4 точки");
+    }
+
+    // Вычисляем ширину и высоту выровненного изображения
+    const float width_bottom = cv::norm(polygon[1] - polygon[0]);
+    const float width_top    = cv::norm(polygon[2] - polygon[3]);
+    float width = std::max(width_bottom, width_top);
+
+    const float height_left  = cv::norm(polygon[3] - polygon[0]);
+    const float height_right = cv::norm(polygon[2] - polygon[1]);
+    float height = std::max(height_left, height_right);
+
+    // Целевые точки: прямой прямоугольник
+    const std::vector<cv::Point2f> dst_pts = {
+        {0.f, height},       // левый нижний
+        {width, height},     // правый нижний
+        {width, 0.f},        // правый верхний
+        {0.f, 0.f}           // левый верхний
+    };
+
+    // Матрица трансформации и применение
+    const cv::Mat M = cv::getPerspectiveTransform(polygon, dst_pts);
+    cv::Mat aligned;
+    cv::warpPerspective(img, aligned, M, cv::Size(static_cast<int>(width), static_cast<int>(height)));
+
+    return aligned;
+}
+
+
 std::vector<fs::path> get_list_of_file_paths(const fs::path& path_lst) {
     std::vector<fs::path> file_paths;
     std::ifstream infile(path_lst);
@@ -114,27 +169,26 @@ int main(const int argc, char** argv) {
             return -1;
         }
 
-        cv::Rect gt_rect = loadROIFromJson(json_paths[i]);
-        gt_rect &= cv::Rect(0, 0, gt.cols, gt.rows); // safety clip
-        cv::Mat gt_cropped = gt(gt_rect);
+        // Загружаем polygon ROI (4 точки)
+        std::vector<cv::Point2f> roi_pts = loadPolygonROIFromJson(json_paths[i]);
 
-        if (gt_cropped.size() != result.size()) {
-            std::cout << "resizing\n";
-            resize(gt_cropped, gt_cropped, result.size());
+        // Выравниваем по polygon как result, так и gt
+        // cv::Mat result_aligned = cropAndAlignByPolygon(result, roi_pts);
+        cv::Mat gt_aligned = cropAndAlignByPolygon(gt, roi_pts);
+
+        // Подгоняем размеры, если нужно
+        if (gt_aligned.size() != result.size()) {
+            cv::resize(gt_aligned, gt_aligned, result.size());
         }
 
         // ===== Стандартные метрики =====
-        const double psnr = cv::PSNR(gt_cropped, result);
-        const double ssim = getMSSIM(gt_cropped, result);
+        const double psnr = cv::PSNR(gt_aligned, result);
+        const double ssim = getMSSIM(gt_aligned, result);
 
         metrics_file << image_paths[i].filename() << ","
                  << psnr << ","
                  << ssim << "\n";
     }
-
-
-    // std::cout << "[RAW] PSNR: " << psnr << " dB\n";
-    // std::cout << "[RAW] SSIM: B: " << ssim[0] << " G: " << ssim[1] << " R: " << ssim[2] << "\n";
 
     return 0;
 }

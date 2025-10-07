@@ -22,7 +22,7 @@ void downsample(cv::Mat src, cv::Mat& dst, const float rate)
 	resize(src, dst, size, rate, rate, cv::INTER_LINEAR);
 }
 
-cv::Mat water_filling(const cv::Mat& src, const cv::Size original_size) {
+cv::Mat water_filling(const cv::Mat& src, const cv::Size original_size, const fs::path& path) {
 	CV_Assert(src.depth() == CV_32F);
 
 	const int height_ = src.rows;
@@ -68,6 +68,13 @@ cv::Mat water_filling(const cv::Mat& src, const cv::Size original_size) {
 			}
 		}
 
+		if (t == 1500)
+		{
+			cv::imwrite(path.string() + "wf_t=1500.jpg", G_);
+		}  else if (t == 100)
+		{
+			cv::imwrite(path.string() + "wf_t=100.jpg", G_);
+		}
 	}
 
 	// upscale
@@ -77,7 +84,7 @@ cv::Mat water_filling(const cv::Mat& src, const cv::Size original_size) {
 	return output;
 }
 
-cv::Mat incre_filling(cv::Mat input, cv::Mat Original){
+cv::Mat incre_filling(cv::Mat input, cv::Mat Original, const fs::path& path){
 	input.convertTo(input, CV_32F);
 	Original.convertTo(Original, CV_32F);
 
@@ -110,7 +117,13 @@ cv::Mat incre_filling(cv::Mat input, cv::Mat Original){
 				}
 			}
 		}
-
+		if (t == 10)
+		{
+			cv::imwrite(path.string() + "if_t=15.jpg", G_);
+		} else if (t == 50)
+		{
+			cv::imwrite(path.string() + "if_t=50.jpg", G_);
+		}
 	}
 	cv::Mat output_;
 
@@ -120,7 +133,7 @@ cv::Mat incre_filling(cv::Mat input, cv::Mat Original){
 	return output_;
 }
 
-cv::Mat removeShadowWaterFilling(const cv::Mat& input, float rate) {
+cv::Mat removeShadowWaterFilling(const cv::Mat& input, float rate, const fs::path& path) {
 	// Перевод из BGR в YCrCb
 	cv::Mat img_YCrCb;
 	cv::cvtColor(input, img_YCrCb, cv::COLOR_BGR2YCrCb);
@@ -139,10 +152,10 @@ cv::Mat removeShadowWaterFilling(const cv::Mat& input, float rate) {
 	// Обработка яркостного канала (Y)
 
 	// Flood and Effuse and Upscale
-	cv::Mat G_ = water_filling(Y, original_Y.size());
+	cv::Mat G_ = water_filling(Y, original_Y.size(), path);
 
 	// Incremental Filling of Catchment Basins
-	G_ = incre_filling(G_, original_Y);
+	G_ = incre_filling(G_, original_Y, path);
 
 	// Объединение каналов
 	std::vector<cv::Mat> channels_(3);
